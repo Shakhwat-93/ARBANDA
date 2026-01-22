@@ -76,6 +76,26 @@ export default function ShopSection({ selectedCategory }) {
         };
 
         fetchProducts();
+
+        // Realtime subscription
+        const channel = supabase
+            .channel('realtime-products')
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'products'
+                },
+                () => {
+                    fetchProducts();
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
     }, [selectedCategory]);
 
     return (

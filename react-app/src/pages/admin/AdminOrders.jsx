@@ -26,6 +26,26 @@ const AdminOrders = () => {
 
     useEffect(() => {
         fetchOrders();
+
+        // Realtime subscription for orders
+        const channel = supabase
+            .channel('admin-orders-realtime')
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'orders'
+                },
+                () => {
+                    fetchOrders();
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
     }, []);
 
     const updateStatus = async (orderId, newStatus) => {

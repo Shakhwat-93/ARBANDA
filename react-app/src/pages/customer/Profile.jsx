@@ -56,15 +56,20 @@ const Profile = () => {
                     });
                 }
 
-                // Fetch customer's orders
-                const { data: ordersData, error: ordersError } = await supabase
-                    .from('orders')
-                    .select('*')
-                    .eq('user_id', user.id)
-                    .order('created_at', { ascending: false });
+                // Helper function for repetitive fetching
+                const getOrders = async (userId) => {
+                    const { data: ordersData, error: ordersError } = await supabase
+                        .from('orders')
+                        .select('*')
+                        .eq('user_id', userId)
+                        .order('created_at', { ascending: false });
 
-                if (ordersError) throw ordersError;
-                setOrders(ordersData);
+                    if (ordersError) throw ordersError;
+                    setOrders(ordersData);
+                };
+
+                // Fetch initial orders
+                await getOrders(user.id);
 
                 // Fetch addresses
                 const { data: addressesData } = await supabase
@@ -75,6 +80,25 @@ const Profile = () => {
 
                 if (addressesData) setAddresses(addressesData);
 
+                // Set up realtime subscription for this user's orders
+                const channel = supabase
+                    .channel(`profile-orders-${user.id}`)
+                    .on(
+                        'postgres_changes',
+                        {
+                            event: '*',
+                            schema: 'public',
+                            table: 'orders',
+                            filter: `user_id=eq.${user.id}`
+                        },
+                        () => {
+                            getOrders(user.id);
+                        }
+                    )
+                    .subscribe();
+
+                return channel;
+
             } catch (err) {
                 console.error('Error fetching profile data:', err.message);
             } finally {
@@ -82,7 +106,13 @@ const Profile = () => {
             }
         };
 
-        fetchUserData();
+        const channelPromise = fetchUserData();
+
+        return () => {
+            channelPromise.then(channel => {
+                if (channel) supabase.removeChannel(channel);
+            });
+        };
     }, [navigate]);
 
     const handleProfileUpdate = async (e) => {

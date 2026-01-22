@@ -35,6 +35,27 @@ const ProductDetailPage = () => {
 
         fetchProduct();
         window.scrollTo(0, 0);
+
+        // Realtime subscription for this specific product
+        const channel = supabase
+            .channel(`product-live-${id}`)
+            .on(
+                'postgres_changes',
+                {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    table: 'products',
+                    filter: `id=eq.${id}`
+                },
+                (payload) => {
+                    setProduct(payload.new);
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
     }, [id]);
 
     const toggleAccordion = (index) => {
