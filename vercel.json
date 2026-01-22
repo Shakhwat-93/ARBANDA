@@ -1,0 +1,40 @@
+{
+    "rewrites": [
+        {
+            "source": "/admin",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/admin/(.*)",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/shop",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/about",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/product/(.*)",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/profile",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/login",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/register",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ]
+}
