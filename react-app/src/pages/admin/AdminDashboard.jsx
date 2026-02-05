@@ -31,6 +31,18 @@ const AdminDashboard = () => {
         recentOrders: []
     });
     const [loading, setLoading] = useState(true);
+    const [isMobile, setIsMobile] = useState(false);
+    const [isTablet, setIsTablet] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+            setIsTablet(window.innerWidth < 1024);
+        };
+        handleResize(); // Set initial
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Mock Data for Charts
     const chartData = [
@@ -133,25 +145,27 @@ const AdminDashboard = () => {
 
     return (
         <AdminLayout>
-            <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ marginBottom: '32px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'center', gap: '16px' }}>
                 <div>
-                    <h1 style={{ fontSize: '24px', fontWeight: '700', margin: 0 }}>Dashboard</h1>
-                    <p style={{ color: '#a1a1aa', fontSize: '14px', marginTop: '4px' }}>Overview of your store's performance.</p>
+                    <h1 style={{ fontSize: '24px', fontWeight: '700', margin: 0 }}>Hi, Boss! 👋</h1>
+                    <p style={{ color: '#a1a1aa', fontSize: '14px', marginTop: '4px' }}>Let's schedule your projects.</p>
                 </div>
-                <div style={{ display: 'flex', gap: '12px' }}>
-                    <button style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: '#18181b', border: '1px solid #27272a', borderRadius: '8px', color: '#fff', fontSize: '13px', cursor: 'pointer' }}>
-                        <RefreshCw size={14} />
-                    </button>
-                    <button style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: '#ec4899', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px', fontWeight: '500', cursor: 'pointer' }}>
-                        <Download size={14} /> Share Report
-                    </button>
-                </div>
+                {!isMobile && (
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                        <button style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: '#18181b', border: '1px solid #27272a', borderRadius: '8px', color: '#fff', fontSize: '13px', cursor: 'pointer' }}>
+                            <RefreshCw size={14} />
+                        </button>
+                        <button style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: '#ec4899', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px', fontWeight: '500', cursor: 'pointer' }}>
+                            <Download size={14} /> Share Report
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Overview Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '32px' }}>
                 <StatCard
-                    title="Total Revenue"
+                    title="Revenue"
                     value={`$${metrics.totalRevenue}`}
                     change="12.95"
                     isPositive={true}
@@ -160,7 +174,7 @@ const AdminDashboard = () => {
                     color="#fff"
                 />
                 <StatCard
-                    title="Total Orders"
+                    title="Orders"
                     value={metrics.totalOrders}
                     change="8.12"
                     isPositive={true}
@@ -168,7 +182,7 @@ const AdminDashboard = () => {
                     color="#f59e0b" // Amber
                 />
                 <StatCard
-                    title="Total Products"
+                    title="Products"
                     value={metrics.totalProducts}
                     change="5.18"
                     isPositive={false}
@@ -176,7 +190,7 @@ const AdminDashboard = () => {
                     color="#3b82f6" // Blue
                 />
                 <StatCard
-                    title="Conversion Rate"
+                    title="Conversion"
                     value="2.4%"
                     change="1.2"
                     isPositive={true}
@@ -186,21 +200,23 @@ const AdminDashboard = () => {
             </div>
 
             {/* Analytics Section */}
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '32px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth < 1024 ? '1fr' : '2fr 1fr', gap: '24px', marginBottom: '32px' }}>
                 {/* Main Chart */}
-                <div style={{ background: '#18181b', borderRadius: '16px', padding: '24px', border: '1px solid #27272a' }}>
+                <div style={{ background: '#18181b', borderRadius: '16px', padding: '16px', border: '1px solid #27272a', overflow: 'hidden' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
                         <h3 style={{ fontSize: '16px', fontWeight: '600', margin: 0 }}>Revenue Analytics</h3>
-                        <div style={{ display: 'flex', gap: '10px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#a1a1aa' }}>
-                                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#8b5cf6' }}></span> Revenue
+                        {!isMobile && (
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#a1a1aa' }}>
+                                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#8b5cf6' }}></span> Revenue
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#a1a1aa' }}>
+                                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b' }}></span> Target
+                                </div>
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#a1a1aa' }}>
-                                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b' }}></span> Target
-                            </div>
-                        </div>
+                        )}
                     </div>
-                    <div style={{ height: '300px', width: '100%' }}>
+                    <div style={{ height: '300px', width: '100%', minWidth: 0 }}>
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData}>
                                 <defs>
