@@ -1,6 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import AdminLayout from '../../layouts/AdminLayout';
 import { supabase } from '../../supabaseClient';
+import {
+    TrendingUp,
+    TrendingDown,
+    DollarSign,
+    ShoppingBag,
+    Users,
+    CreditCard,
+    MoreHorizontal,
+    Download,
+    RefreshCw,
+    Filter
+} from 'lucide-react';
+import {
+    AreaChart,
+    Area,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer
+} from 'recharts';
 
 const AdminDashboard = () => {
     const [metrics, setMetrics] = useState({
@@ -11,16 +32,27 @@ const AdminDashboard = () => {
     });
     const [loading, setLoading] = useState(true);
 
+    // Mock Data for Charts
+    const chartData = [
+        { name: 'Jan', revenue: 4000, target: 2400 },
+        { name: 'Feb', revenue: 3000, target: 1398 },
+        { name: 'Mar', revenue: 2000, target: 9800 },
+        { name: 'Apr', revenue: 2780, target: 3908 },
+        { name: 'May', revenue: 1890, target: 4800 },
+        { name: 'Jun', revenue: 2390, target: 3800 },
+        { name: 'Jul', revenue: 3490, target: 4300 },
+    ];
+
     useEffect(() => {
         const fetchMetrics = async () => {
             setLoading(true);
             try {
-                // Fetch Total Products count
+                // Fetch Total Products
                 const { count: productCount } = await supabase
                     .from('products')
                     .select('*', { count: 'exact', head: true });
 
-                // Fetch Orders for metrics and recent activity
+                // Fetch Orders
                 const { data: orders, error: ordersError } = await supabase
                     .from('orders')
                     .select('*')
@@ -34,7 +66,7 @@ const AdminDashboard = () => {
                     totalProducts: productCount || 0,
                     totalOrders: orders.length,
                     totalRevenue: revenue.toFixed(2),
-                    recentOrders: orders.slice(0, 5) // Last 5 orders
+                    recentOrders: orders.slice(0, 5)
                 });
             } catch (err) {
                 console.error('Error fetching metrics:', err.message);
@@ -46,77 +78,252 @@ const AdminDashboard = () => {
         fetchMetrics();
     }, []);
 
-    return (
-        <AdminLayout>
-            <div style={{ marginBottom: '40px' }}>
-                <h1 style={{ color: '#ebcfb9', margin: 0 }}>Overview</h1>
-                <p style={{ color: '#666', marginTop: '10px' }}>Welcome back! Here is what's happening with your store today.</p>
+    // Reusable Stat Card Component
+    const StatCard = ({ title, value, change, isPositive, icon: Icon, gradient, color = '#fff' }) => (
+        <div style={{
+            background: gradient ? gradient : '#18181b', // Gradient or Solid Dark
+            borderRadius: '16px',
+            padding: '24px',
+            position: 'relative',
+            overflow: 'hidden',
+            border: '1px solid #27272a',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: '160px'
+        }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div style={{
+                    width: '40px', height: '40px',
+                    background: 'rgba(255,255,255,0.1)',
+                    borderRadius: '10px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: color
+                }}>
+                    <Icon size={20} />
+                </div>
+                <MoreHorizontal size={20} color="#71717a" style={{ cursor: 'pointer' }} />
             </div>
 
-            {loading ? (
-                <div style={{ color: '#666', padding: '40px' }}>Updating metrics...</div>
-            ) : (
-                <>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
-                        <div style={{ background: '#1a1a1a', padding: '25px', borderRadius: '12px', border: '1px solid #333' }}>
-                            <h3 style={{ color: '#888', marginBottom: '10px', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '1px' }}>Total Products</h3>
-                            <p style={{ fontSize: '32px', fontWeight: '700', margin: 0, color: '#fff' }}>{metrics.totalProducts}</p>
-                        </div>
-                        <div style={{ background: '#1a1a1a', padding: '25px', borderRadius: '12px', border: '1px solid #333' }}>
-                            <h3 style={{ color: '#888', marginBottom: '10px', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '1px' }}>Total Orders</h3>
-                            <p style={{ fontSize: '32px', fontWeight: '700', margin: 0, color: '#fff' }}>{metrics.totalOrders}</p>
-                        </div>
-                        <div style={{ background: '#1a1a1a', padding: '25px', borderRadius: '12px', border: '1px solid #333' }}>
-                            <h3 style={{ color: '#888', marginBottom: '10px', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '1px' }}>Total Revenue</h3>
-                            <p style={{ fontSize: '32px', fontWeight: '700', margin: 0, color: '#ebcfb9' }}>$ {metrics.totalRevenue}</p>
-                        </div>
-                    </div>
+            <div>
+                <p style={{ color: gradient ? 'rgba(255,255,255,0.8)' : '#a1a1aa', fontSize: '13px', fontWeight: '500', marginBottom: '8px' }}>{title}</p>
+                <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
+                    <h3 style={{ fontSize: '28px', fontWeight: '700', margin: 0, color: '#fff' }}>{value}</h3>
+                    {change && (
+                        <span style={{
+                            fontSize: '11px',
+                            fontWeight: '600',
+                            background: isPositive ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)',
+                            color: isPositive ? '#34d399' : '#f87171',
+                            padding: '2px 8px',
+                            borderRadius: '20px',
+                            marginBottom: '6px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '2px'
+                        }}>
+                            {isPositive ? '+' : ''}{change}%
+                        </span>
+                    )}
+                </div>
+                {change && <p style={{ fontSize: '11px', color: gradient ? 'rgba(255,255,255,0.6)' : '#52525b', marginTop: '4px' }}>Compared to last month</p>}
+            </div>
+        </div>
+    );
 
-                    <div style={{ marginTop: '40px', background: '#1a1a1a', padding: '30px', borderRadius: '12px', border: '1px solid #333' }}>
-                        <h3 style={{ color: '#ebcfb9', marginBottom: '20px' }}>Recent Orders</h3>
-                        {metrics.recentOrders.length === 0 ? (
-                            <div style={{ color: '#666', textAlign: 'center', padding: '60px 0' }}>
-                                <p style={{ margin: 0 }}>No recent orders to show.</p>
-                                <small>Once customers start buying, their activity will appear here.</small>
+    return (
+        <AdminLayout>
+            <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                    <h1 style={{ fontSize: '24px', fontWeight: '700', margin: 0 }}>Dashboard</h1>
+                    <p style={{ color: '#a1a1aa', fontSize: '14px', marginTop: '4px' }}>Overview of your store's performance.</p>
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                    <button style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: '#18181b', border: '1px solid #27272a', borderRadius: '8px', color: '#fff', fontSize: '13px', cursor: 'pointer' }}>
+                        <RefreshCw size={14} />
+                    </button>
+                    <button style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: '#ec4899', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px', fontWeight: '500', cursor: 'pointer' }}>
+                        <Download size={14} /> Share Report
+                    </button>
+                </div>
+            </div>
+
+            {/* Overview Cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+                <StatCard
+                    title="Total Revenue"
+                    value={`$${metrics.totalRevenue}`}
+                    change="12.95"
+                    isPositive={true}
+                    icon={DollarSign}
+                    gradient="linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%)" // Purple Gradient
+                    color="#fff"
+                />
+                <StatCard
+                    title="Total Orders"
+                    value={metrics.totalOrders}
+                    change="8.12"
+                    isPositive={true}
+                    icon={ShoppingBag}
+                    color="#f59e0b" // Amber
+                />
+                <StatCard
+                    title="Total Products"
+                    value={metrics.totalProducts}
+                    change="5.18"
+                    isPositive={false}
+                    icon={CreditCard}
+                    color="#3b82f6" // Blue
+                />
+                <StatCard
+                    title="Conversion Rate"
+                    value="2.4%"
+                    change="1.2"
+                    isPositive={true}
+                    icon={TrendingUp}
+                    color="#10b981" // Green
+                />
+            </div>
+
+            {/* Analytics Section */}
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '32px' }}>
+                {/* Main Chart */}
+                <div style={{ background: '#18181b', borderRadius: '16px', padding: '24px', border: '1px solid #27272a' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                        <h3 style={{ fontSize: '16px', fontWeight: '600', margin: 0 }}>Revenue Analytics</h3>
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#a1a1aa' }}>
+                                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#8b5cf6' }}></span> Revenue
                             </div>
-                        ) : (
-                            <div style={{ overflowX: 'auto' }}>
-                                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                                    <thead>
-                                        <tr style={{ textAlign: 'left', borderBottom: '1px solid #222' }}>
-                                            <th style={{ padding: '15px 10px', color: '#888', fontWeight: '500' }}>Customer</th>
-                                            <th style={{ padding: '15px 10px', color: '#888', fontWeight: '500' }}>Date</th>
-                                            <th style={{ padding: '15px 10px', color: '#888', fontWeight: '500' }}>Amount</th>
-                                            <th style={{ padding: '15px 10px', color: '#888', fontWeight: '500' }}>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {metrics.recentOrders.map(order => (
-                                            <tr key={order.id} style={{ borderBottom: '1px solid #111' }}>
-                                                <td style={{ padding: '15px 10px', color: '#fff' }}>{order.customer_name}</td>
-                                                <td style={{ padding: '15px 10px', color: '#666' }}>{new Date(order.created_at).toLocaleDateString()}</td>
-                                                <td style={{ padding: '15px 10px', color: '#ebcfb9' }}>$ {order.total_amount}</td>
-                                                <td style={{ padding: '15px 10px' }}>
-                                                    <span style={{
-                                                        fontSize: '11px',
-                                                        textTransform: 'uppercase',
-                                                        padding: '2px 8px',
-                                                        borderRadius: '4px',
-                                                        border: '1px solid #333',
-                                                        color: order.status === 'pending' ? '#ffaa00' : '#888'
-                                                    }}>
-                                                        {order.status}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#a1a1aa' }}>
+                                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b' }}></span> Target
                             </div>
-                        )}
+                        </div>
                     </div>
-                </>
-            )}
+                    <div style={{ height: '300px', width: '100%' }}>
+                        <ResponsiveContainer width="100%" height="100%">
+                            <AreaChart data={chartData}>
+                                <defs>
+                                    <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3} />
+                                        <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
+                                    </linearGradient>
+                                    <linearGradient id="colorTarget" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3} />
+                                        <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
+                                    </linearGradient>
+                                </defs>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
+                                <XAxis dataKey="name" stroke="#52525b" fontSize={12} tickLine={false} axisLine={false} />
+                                <YAxis stroke="#52525b" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
+                                <Tooltip
+                                    contentStyle={{ background: '#18181b', border: '1px solid #27272a', borderRadius: '8px' }}
+                                    itemStyle={{ fontSize: '12px' }}
+                                />
+                                <Area type="monotone" dataKey="revenue" stroke="#8b5cf6" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenue)" />
+                                <Area type="monotone" dataKey="target" stroke="#f59e0b" strokeWidth={3} fillOpacity={1} fill="url(#colorTarget)" />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                {/* Orders by Country (Placeholder stats) */}
+                <div style={{ background: '#18181b', borderRadius: '16px', padding: '24px', border: '1px solid #27272a', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                        <h3 style={{ fontSize: '16px', fontWeight: '600', margin: 0 }}>Orders by Region</h3>
+                        <MoreHorizontal size={18} color="#71717a" />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                        {[
+                            { country: 'United States', amount: '85%', color: '#8b5cf6' },
+                            { country: 'Japan', amount: '70%', color: '#ec4899' },
+                            { country: 'Indonesia', amount: '45%', color: '#f59e0b' },
+                            { country: 'South Korea', amount: '38%', color: '#10b981' },
+                        ].map((item) => (
+                            <div key={item.country}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px', fontWeight: '500' }}>
+                                    <span>{item.country}</span>
+                                    <span>{item.amount}</span>
+                                </div>
+                                <div style={{ width: '100%', height: '8px', background: '#27272a', borderRadius: '4px', overflow: 'hidden' }}>
+                                    <div style={{ width: item.amount, height: '100%', background: item.color, borderRadius: '4px' }}></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <button style={{ width: '100%', padding: '12px', marginTop: '20px', background: 'transparent', border: '1px solid #27272a', borderRadius: '8px', color: '#fff', fontSize: '13px', cursor: 'pointer' }}>View Full Report</button>
+                </div>
+            </div>
+
+            {/* Recent Orders Table */}
+            <div style={{ background: '#18181b', borderRadius: '16px', padding: '24px', border: '1px solid #27272a' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px', alignItems: 'center' }}>
+                    <h3 style={{ fontSize: '18px', fontWeight: '600', margin: 0 }}>Transaction History</h3>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <button style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 12px', background: '#27272a', border: 'none', borderRadius: '6px', color: '#a1a1aa', fontSize: '12px' }}>
+                            <Filter size={14} /> Filter
+                        </button>
+                        <button style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 12px', background: '#27272a', border: 'none', borderRadius: '6px', color: '#a1a1aa', fontSize: '12px' }}>
+                            <Download size={14} /> Export
+                        </button>
+                    </div>
+                </div>
+
+                <div style={{ overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+                        <thead>
+                            <tr style={{ borderBottom: '1px solid #27272a' }}>
+                                <th style={{ textAlign: 'left', padding: '16px', color: '#71717a', fontWeight: '500' }}>Customer</th>
+                                <th style={{ textAlign: 'left', padding: '16px', color: '#71717a', fontWeight: '500' }}>Product</th>
+                                <th style={{ textAlign: 'left', padding: '16px', color: '#71717a', fontWeight: '500' }}>Date</th>
+                                <th style={{ textAlign: 'left', padding: '16px', color: '#71717a', fontWeight: '500' }}>Amount</th>
+                                <th style={{ textAlign: 'left', padding: '16px', color: '#71717a', fontWeight: '500' }}>Status</th>
+                                <th style={{ textAlign: 'right', padding: '16px', color: '#71717a', fontWeight: '500' }}>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {metrics.recentOrders.length === 0 ? (
+                                <tr>
+                                    <td colSpan="6" style={{ padding: '40px', textAlign: 'center', color: '#52525b' }}>No recent orders found.</td>
+                                </tr>
+                            ) : (
+                                metrics.recentOrders.map((order) => (
+                                    <tr key={order.id} style={{ borderBottom: '1px solid #27272a', transition: 'background 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#27272a'} onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}>
+                                        <td style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#3f3f46', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: '600' }}>
+                                                {order.customer_name ? order.customer_name.charAt(0) : 'U'}
+                                            </div>
+                                            <div>
+                                                <p style={{ margin: 0, fontWeight: '500' }}>{order.customer_name || 'Guest User'}</p>
+                                                <p style={{ margin: 0, fontSize: '12px', color: '#71717a' }}>{order.customer_email || 'No email'}</p>
+                                            </div>
+                                        </td>
+                                        <td style={{ padding: '16px', color: '#a1a1aa' }}>Order #{order.id}</td>
+                                        <td style={{ padding: '16px', color: '#a1a1aa' }}>{new Date(order.created_at).toLocaleDateString()}</td>
+                                        <td style={{ padding: '16px', fontWeight: '600' }}>${order.total_amount}</td>
+                                        <td style={{ padding: '16px' }}>
+                                            <span style={{
+                                                padding: '4px 10px',
+                                                borderRadius: '20px',
+                                                fontSize: '12px',
+                                                fontWeight: '500',
+                                                background: order.status === 'pending' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(16, 185, 129, 0.1)',
+                                                color: order.status === 'pending' ? '#f59e0b' : '#10b981',
+                                                border: `1px solid ${order.status === 'pending' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)'}`
+                                            }}>
+                                                • {order.status}
+                                            </span>
+                                        </td>
+                                        <td style={{ padding: '16px', textAlign: 'right' }}>
+                                            <button style={{ padding: '6px 12px', background: '#27272a', border: 'nome', borderRadius: '6px', color: '#fff', fontSize: '12px', cursor: 'pointer' }}>View</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </AdminLayout>
     );
 };

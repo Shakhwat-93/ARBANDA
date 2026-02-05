@@ -1,0 +1,34 @@
+<svg width="800" height="1000" viewBox="0 0 800 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="1000" fill="#261A13"/>
+    <defs>
+        <linearGradient id="paint0_linear" x1="400" y1="0" x2="400" y2="1000" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#261A13"/>
+            <stop offset="1" stop-color="#1A110D"/>
+        </linearGradient>
+        <filter id="f1" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="20" result="blur"/>
+        </filter>
+    </defs>
+    
+    <!-- Abstract Organic Shapes (Flower-like) -->
+    <g opacity="0.8">
+        <path d="M400 900 C 200 900, 100 600, 200 400 C 300 200, 500 200, 600 400 C 700 600, 600 900, 400 900 Z" fill="#3E2B20"/>
+        <path d="M400 900 C 250 850, 200 600, 300 450 C 400 300, 400 300, 500 450 C 600 600, 550 850, 400 900 Z" fill="#583E2F"/>
+        
+        <!-- Petals -->
+        <path d="M350 500 Q 200 200, 400 100 Q 600 200, 450 500" stroke="#EBCFB9" stroke-width="2" fill="url(#grad1)" opacity="0.6"/>
+        <path d="M400 550 Q 150 250, 380 50 Q 650 250, 400 550" stroke="#EBCFB9" stroke-width="1" fill="none" opacity="0.4"/>
+
+        <!-- Glowing Particles -->
+        <circle cx="200" cy="200" r="2" fill="#EBCFB9" opacity="0.8"/>
+        <circle cx="600" cy="300" r="3" fill="#EBCFB9" opacity="0.6"/>
+        <circle cx="300" cy="150" r="2" fill="#EBCFB9" opacity="0.7"/>
+        <circle cx="500" cy="180" r="1.5" fill="#EBCFB9" opacity="0.9"/>
+        <circle cx="400" cy="400" r="100" fill="#EBCFB9" filter="url(#f1)" opacity="0.1"/>
+    </g>
+    
+    <!-- Stylized Pot/Base -->
+    <path d="M250 1000 L 300 700 L 500 700 L 550 1000 Z" fill="#1A110D"/>
+    
+    <text x="50%" y="90%" font-family="serif" font-size="24" fill="#EBCFB9" text-anchor="middle" opacity="0.3" letter-spacing="5">ARBANDA</text>
+</svg>

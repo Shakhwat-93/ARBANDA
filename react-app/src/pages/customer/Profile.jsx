@@ -278,6 +278,7 @@ const Profile = () => {
             <div className="section">
                 <div className="container" style={{ maxWidth: '1200px' }}>
 
+
                     {/* Header */}
                     <div className="profile-header">
                         <div>
@@ -286,7 +287,7 @@ const Profile = () => {
                         </div>
                         <button
                             onClick={handleLogout}
-                            className="logout-btn"
+                            className="logout-btn-header"
                         >
                             LOG OUT
                         </button>
@@ -295,6 +296,15 @@ const Profile = () => {
                     <div className="profile-dashboard-layout">
                         <style dangerouslySetInnerHTML={{
                             __html: `
+                            .profile-header {
+                                margin-bottom: 40px;
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: flex-end;
+                            }
+                            .logout-btn-header {
+                                display: none;
+                            }
                             .profile-dashboard-layout {
                                 display: flex;
                                 gap: 40px;
@@ -305,75 +315,92 @@ const Profile = () => {
                                 top: 120px;
                                 z-index: 10;
                             }
-                            .profile-tabs-scroll {
-                                display: none;
+                    .profile-tabs-scroll {
+                        display: none;
                             }
-                            @media (max-width: 991px) {
-                                .profile-dashboard-layout {
-                                    flex-direction: column;
-                                    gap: 0;
+                    @media (max-width: 991px) {
+                                .profile - dashboard - layout {
+                        flex - direction: column;
+                    gap: 0;
                                 }
-                                .profile-sidebar {
-                                    display: none;
+                    .profile-sidebar {
+                        display: none;
                                 }
-                                .profile-tabs-scroll {
-                                    display: flex;
-                                    width: calc(100% + 40px);
-                                    margin-left: -20px;
-                                    overflow-x: auto;
-                                    padding: 10px 20px 20px;
-                                    gap: 12px;
-                                    scrollbar-width: none;
-                                    -ms-overflow-style: none;
-                                    margin-bottom: 20px;
-                                    position: sticky;
-                                    top: 70px;
-                                    background: #fdf0e1;
-                                    z-index: 100;
+                    .profile-tabs-scroll {
+                        display: flex;
+                    width: calc(100% + 40px);
+                    margin-left: -20px;
+                    overflow-x: auto;
+                    padding: 10px 20px 20px;
+                    gap: 12px;
+                    scrollbar-width: none;
+                    -ms-overflow-style: none;
+                    margin-bottom: 20px;
+                    position: sticky;
+                    top: 70px;
+                    background: #fdf0e1;
+                    z-index: 100;
                                 }
-                                .profile-tabs-scroll::-webkit-scrollbar {
-                                    display: none;
+                    .profile-tabs-scroll::-webkit-scrollbar {
+                        display: none;
                                 }
-                                .mobile-tab-btn {
-                                    flex: 0 0 auto;
-                                    padding: 12px 24px;
-                                    border-radius: 30px;
-                                    border: 1px solid #ebcfb9;
-                                    background: #fff;
-                                    color: #8d7a6e;
-                                    font-size: 14px;
-                                    font-weight: 700;
-                                    transition: all 0.3s ease;
-                                    white-space: nowrap;
+                    .mobile-tab-btn {
+                        flex: 0 0 auto;
+                    padding: 12px 24px;
+                    border-radius: 30px;
+                    border: 1px solid #ebcfb9;
+                    background: #fff;
+                    color: #8d7a6e;
+                    font-size: 14px;
+                    font-weight: 700;
+                    transition: all 0.3s ease;
+                    white-space: nowrap;
                                 }
-                                .mobile-tab-btn.active {
-                                    background: #261a13;
-                                    color: #fdf0e1;
-                                    border-color: #261a13;
-                                    box-shadow: 0 10px 20px rgba(38,26,19,0.1);
+                    .mobile-tab-btn.active {
+                        background: #261a13;
+                    color: #fdf0e1;
+                    border-color: #261a13;
+                    box-shadow: 0 10px 20px rgba(38,26,19,0.1);
                                 }
-                                .profile-content-area {
-                                    padding: 0 !important;
+                    .profile-content-area {
+                        padding: 0 !important;
                                 }
-                                .profile-card {
-                                    padding: 30px 20px !important;
-                                    border-radius: 24px !important;
-                                    border: none !important;
-                                    box-shadow: 0 10px 30px rgba(38,26,19,0.05) !important;
+                    .profile-card {
+                        padding: 30px 20px !important;
+                    border-radius: 24px !important;
+                    border: none !important;
+                    box-shadow: 0 10px 30px rgba(38,26,19,0.05) !important;
                                 }
-                                h1 {
-                                    font-size: 28px !important;
-                                    margin-bottom: 5px !important;
+                    h1 {
+                        font - size: 28px !important;
+                    margin-bottom: 5px !important;
                                 }
-                                .profile-header {
-                                    margin-bottom: 30px !important;
-                                    flex-direction: column;
-                                    align-items: flex-start !important;
-                                    gap: 20px;
+                    .profile-header {
+                        margin - bottom: 30px !important;
+                    flex-direction: column;
+                    align-items: flex-start !important;
+                    gap: 20px;
                                 }
-                                .logout-btn {
-                                    width: 100%;
-                                    text-align: center;
+                    .logout-btn-header {
+                        display: block;
+                    width: 100%;
+                    text-align: center;
+                    background: #fff;
+                    border: 1px solid #ebcfb9;
+                    color: #eb4d4b;
+                    padding: 15px;
+                    border-radius: 15px;
+                    font-weight: 700;
+                    font-size: 14px;
+                    letter-spacing: 1px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                                }
+                    .logout-btn-header:active {
+                        transform: scale(0.98);
+                    background: #eb4d4b;
+                    color: white;
+                    border-color: #eb4d4b;
                                 }
                             }
                         `}} />
@@ -392,8 +419,8 @@ const Profile = () => {
                         </div>
 
                         {/* Sidebar Navigation (Desktop) */}
-                        <div className="profile-sidebar" style={{ width: '300px', background: '#fff0e5', borderRadius: '30px', padding: '30px', border: '1px solid #ebcfb9', boxShadow: '0 20px 40px rgba(38,26,19,0.03)' }}>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        <div className="profile-sidebar" style={{ width: '300px', background: '#fff0e5', borderRadius: '30px', padding: '30px', border: '1px solid #ebcfb9', boxShadow: '0 20px 40px rgba(38,26,19,0.03)', display: 'flex', flexDirection: 'column', height: 'fit-content', minHeight: '500px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
                                 {navigationItems.map(item => (
                                     <button
                                         key={item.id}
@@ -418,6 +445,34 @@ const Profile = () => {
                                         {item.label}
                                     </button>
                                 ))}
+                            </div>
+
+                            {/* Desktop Sidebar Logout */}
+                            <div style={{ marginTop: '40px', paddingTop: '20px', borderTop: '1px solid #ebcfb9' }}>
+                                <button
+                                    onClick={handleLogout}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '15px',
+                                        padding: '16px 20px',
+                                        borderRadius: '15px',
+                                        border: 'none',
+                                        background: 'transparent',
+                                        color: '#e74c3c',
+                                        cursor: 'pointer',
+                                        fontSize: '16px',
+                                        fontWeight: '700',
+                                        textAlign: 'left',
+                                        width: '100%',
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                    onMouseOver={(e) => { e.currentTarget.style.background = '#ffe5e5'; }}
+                                    onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                                >
+                                    <span style={{ fontSize: '20px' }}>🚪</span>
+                                    Log Out
+                                </button>
                             </div>
                         </div>
 
@@ -608,7 +663,7 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

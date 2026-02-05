@@ -77,9 +77,10 @@ export default function ShopSection({ selectedCategory }) {
 
         fetchProducts();
 
-        // Realtime subscription
+        // Real-time subscription
+        const channelName = selectedCategory ? `shop-products-${selectedCategory}` : 'shop-products-all';
         const channel = supabase
-            .channel('realtime-products')
+            .channel(channelName)
             .on(
                 'postgres_changes',
                 {

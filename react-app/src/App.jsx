@@ -10,7 +10,9 @@ import LoginPage from './pages/admin/LoginPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
+import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminSettings from './pages/admin/AdminSettings';
+import ComingSoon from './components/admin/ComingSoon';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import Registration from './pages/customer/Registration';
 import Login from './pages/customer/Login';
@@ -55,8 +57,8 @@ function App() {
         <Route path="/checkout" element={<MainLayout><CheckoutPage /></MainLayout>} />
 
         {/* Customer Auth */}
-        <Route path="/register" element={<MainLayout><Registration /></MainLayout>} />
-        <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
+        <Route path="/register" element={<Registration />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<MainLayout><ForgotPassword /></MainLayout>} />
         <Route path="/reset-password" element={<MainLayout><ResetPassword /></MainLayout>} />
         <Route path="/profile" element={
@@ -84,11 +86,22 @@ function App() {
             <AdminOrders />
           </ProtectedRoute>
         } />
+        <Route path="/admin/customers" element={
+          <ProtectedRoute>
+            <AdminCustomers />
+          </ProtectedRoute>
+        } />
         <Route path="/admin/settings" element={
           <ProtectedRoute>
             <AdminSettings />
           </ProtectedRoute>
         } />
+        {/* Placeholder Routes */}
+        <Route path="/admin/analytics" element={<ProtectedRoute><ComingSoon title="Analytics Coming Soon" /></ProtectedRoute>} />
+        <Route path="/admin/inventory" element={<ProtectedRoute><ComingSoon title="Inventory Coming Soon" /></ProtectedRoute>} />
+        <Route path="/admin/coupons" element={<ProtectedRoute><ComingSoon title="Coupons & Discounts" /></ProtectedRoute>} />
+        <Route path="/admin/integrations" element={<ProtectedRoute><ComingSoon title="Payments Configuration" /></ProtectedRoute>} />
+        <Route path="/admin/shipping" element={<ProtectedRoute><ComingSoon title="Shipping Settings" /></ProtectedRoute>} />
       </Routes>
     </Router>
   );

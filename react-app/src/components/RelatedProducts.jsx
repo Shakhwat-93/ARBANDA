@@ -31,6 +31,27 @@ const RelatedProducts = ({ currentProductId, category }) => {
         };
 
         fetchRelated();
+
+        // Real-time subscription for products in this category
+        const channel = supabase
+            .channel(`related-products-${category}-${currentProductId}`)
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'products',
+                    filter: `category=eq.${category}`
+                },
+                () => {
+                    fetchRelated();
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
     }, [currentProductId, category]);
 
     if (loading || related.length === 0) return null;
