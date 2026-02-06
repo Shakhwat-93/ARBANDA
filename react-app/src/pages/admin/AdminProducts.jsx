@@ -4,6 +4,7 @@ import AddProductModal from '../../components/admin/AddProductModal';
 import EditProductModal from '../../components/admin/EditProductModal';
 import { supabase } from '../../supabaseClient';
 import { Search, Plus, Edit, Trash2, MoreHorizontal, Filter } from 'lucide-react';
+import PremiumLoader from '../../components/common/PremiumLoader';
 
 const AdminProducts = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -138,7 +139,7 @@ const AdminProducts = () => {
                 // Mobile Card View
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     {loading ? (
-                        <div style={{ padding: '40px', textAlign: 'center', color: '#71717a' }}>Loading products...</div>
+                        <PremiumLoader text="Loading products..." />
                     ) : filteredProducts.length === 0 ? (
                         <div style={{ padding: '60px', textAlign: 'center', color: '#71717a' }}>No products found.</div>
                     ) : (
@@ -201,7 +202,7 @@ const AdminProducts = () => {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan="5" style={{ padding: '40px', textAlign: 'center', color: '#71717a' }}>Loading products...</td></tr>
+                                <tr><td colSpan="5"><PremiumLoader text="Loading..." /></td></tr>
                             ) : filteredProducts.length === 0 ? (
                                 <tr><td colSpan="5" style={{ padding: '60px', textAlign: 'center', color: '#71717a' }}>No products found matching your search.</td></tr>
                             ) : (

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AdminLayout from '../../layouts/AdminLayout';
 import { supabase } from '../../supabaseClient';
 import { Search, Filter, Eye, X, RefreshCw } from 'lucide-react';
+import PremiumLoader from '../../components/common/PremiumLoader';
 
 const AdminOrders = () => {
     const [orders, setOrders] = useState([]);
@@ -144,7 +145,7 @@ const AdminOrders = () => {
                 // Mobile Card View
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     {loading ? (
-                        <div style={{ padding: '40px', textAlign: 'center', color: '#71717a' }}>Loading orders...</div>
+                        <PremiumLoader text="Loading orders..." />
                     ) : filteredOrders.length === 0 ? (
                         <div style={{ padding: '60px', textAlign: 'center', color: '#71717a' }}>No orders found.</div>
                     ) : (
@@ -218,7 +219,7 @@ const AdminOrders = () => {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan="6" style={{ padding: '40px', textAlign: 'center', color: '#71717a' }}>Loading orders...</td></tr>
+                                <tr><td colSpan="6"><PremiumLoader text="Loading orders..." /></td></tr>
                             ) : filteredOrders.length === 0 ? (
                                 <tr><td colSpan="6" style={{ padding: '60px', textAlign: 'center', color: '#71717a' }}>No orders found.</td></tr>
                             ) : (

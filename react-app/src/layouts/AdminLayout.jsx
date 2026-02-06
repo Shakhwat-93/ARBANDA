@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom'; // Added NavLink
 import AdminSidebar from '../components/admin/AdminSidebar';
-import { Search, LayoutDashboard, ShoppingBag, Users, ShoppingCart } from 'lucide-react'; // Added icons
+import { Search, LayoutDashboard, ShoppingBag, Users, ShoppingCart, Ticket } from 'lucide-react'; // Added icons
 
 const MobileAdminNav = () => {
     const linkStyle = ({ isActive }) => ({
@@ -63,6 +63,11 @@ const MobileAdminNav = () => {
                     </svg>
                 </NavLink>
             </div>
+
+            <NavLink to="/admin/coupons" style={linkStyle}>
+                <Ticket size={20} />
+                <span>Coupons</span>
+            </NavLink>
 
             <NavLink to="/admin/orders" style={linkStyle}>
                 <ShoppingCart size={20} />

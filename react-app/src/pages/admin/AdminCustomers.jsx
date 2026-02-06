@@ -3,6 +3,7 @@ import AdminLayout from '../../layouts/AdminLayout';
 import { supabase } from '../../supabaseClient';
 import { Search, Filter, Ban, CheckCircle, MoreHorizontal, UserX, UserCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
+import PremiumLoader from '../../components/common/PremiumLoader';
 
 const AdminCustomers = () => {
     const [customers, setCustomers] = useState([]);
@@ -142,7 +143,7 @@ const AdminCustomers = () => {
                 // Mobile Card View
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     {loading ? (
-                        <div style={{ padding: '40px', textAlign: 'center', color: '#71717a' }}>Loading customers...</div>
+                        <PremiumLoader text="Loading customers..." />
                     ) : filteredCustomers.length === 0 ? (
                         <div style={{ padding: '60px', textAlign: 'center', color: '#71717a' }}>No customers found.</div>
                     ) : (
@@ -204,7 +205,7 @@ const AdminCustomers = () => {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan="5" style={{ padding: '40px', textAlign: 'center', color: '#71717a' }}>Loading customers...</td></tr>
+                                <tr><td colSpan="5"><PremiumLoader text="Loading customers..." /></td></tr>
                             ) : filteredCustomers.length === 0 ? (
                                 <tr><td colSpan="5" style={{ padding: '60px', textAlign: 'center', color: '#71717a' }}>No customers found.</td></tr>
                             ) : (

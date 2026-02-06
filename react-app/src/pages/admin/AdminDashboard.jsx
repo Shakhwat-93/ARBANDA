@@ -22,6 +22,7 @@ import {
     Tooltip,
     ResponsiveContainer
 } from 'recharts';
+import PremiumLoader from '../../components/common/PremiumLoader';
 
 const AdminDashboard = () => {
     const [metrics, setMetrics] = useState({
@@ -143,8 +144,19 @@ const AdminDashboard = () => {
         </div>
     );
 
+    if (loading) {
+        return (
+            <AdminLayout>
+                <div style={{ height: 'calc(100vh - 100px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <PremiumLoader text="Loading Dashboard..." />
+                </div>
+            </AdminLayout>
+        );
+    }
+
     return (
         <AdminLayout>
+
             <div style={{ marginBottom: '32px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'center', gap: '16px' }}>
                 <div>
                     <h1 style={{ fontSize: '24px', fontWeight: '700', margin: 0 }}>Hi, Boss! 👋</h1>

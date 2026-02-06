@@ -12,6 +12,7 @@ import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminSettings from './pages/admin/AdminSettings';
+import AdminCoupons from './pages/admin/AdminCoupons';
 import ComingSoon from './components/admin/ComingSoon';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import Registration from './pages/customer/Registration';
@@ -99,7 +100,7 @@ function App() {
         {/* Placeholder Routes */}
         <Route path="/admin/analytics" element={<ProtectedRoute><ComingSoon title="Analytics Coming Soon" /></ProtectedRoute>} />
         <Route path="/admin/inventory" element={<ProtectedRoute><ComingSoon title="Inventory Coming Soon" /></ProtectedRoute>} />
-        <Route path="/admin/coupons" element={<ProtectedRoute><ComingSoon title="Coupons & Discounts" /></ProtectedRoute>} />
+        <Route path="/admin/coupons" element={<ProtectedRoute><AdminCoupons /></ProtectedRoute>} />
         <Route path="/admin/integrations" element={<ProtectedRoute><ComingSoon title="Payments Configuration" /></ProtectedRoute>} />
         <Route path="/admin/shipping" element={<ProtectedRoute><ComingSoon title="Shipping Settings" /></ProtectedRoute>} />
       </Routes>
