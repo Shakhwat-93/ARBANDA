@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import useCartStore from '../store/useCartStore';
 import { useEffect } from 'react';
+import { useCurrency } from '../context/CurrencyContext';
 
 const CheckoutPage = () => {
     const { items, getTotalPrice, clearCart } = useCartStore();
+    const { formatPrice } = useCurrency();
     const navigate = useNavigate();
     const [addresses, setAddresses] = useState([]);
     const [showAddressDropdown, setShowAddressDropdown] = useState(false);
@@ -273,7 +275,7 @@ const CheckoutPage = () => {
                                                 className="button w-button"
                                                 style={{ width: '100%', padding: '22px', fontSize: '18px', borderRadius: '40px', fontWeight: '900', letterSpacing: '1px', boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
                                             >
-                                                {loading ? 'PROCESSING...' : `PLACE ORDER - $${getTotalPrice()} USD`}
+                                                {loading ? 'PROCESSING...' : `PLACE ORDER - ${formatPrice(getTotalPrice())}`}
                                             </button>
                                         </div>
                                     </form>
@@ -289,16 +291,16 @@ const CheckoutPage = () => {
                                     <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', borderBottom: '1px solid #f9f9f9', paddingBottom: '15px' }}>
                                         <div>
                                             <div style={{ color: '#261a13', fontWeight: '600', fontSize: '16px' }}>{item.name}</div>
-                                            <div style={{ color: '#8d7a6e', fontSize: '14px' }}>Qty: {item.quantity} × $ {item.price}</div>
+                                            <div style={{ color: '#8d7a6e', fontSize: '14px' }}>Qty: {item.quantity} × {formatPrice(item.price)}</div>
                                         </div>
-                                        <div style={{ color: '#261a13', fontWeight: '700' }}>$ {item.price * item.quantity}</div>
+                                        <div style={{ color: '#261a13', fontWeight: '700' }}>{formatPrice(item.price * item.quantity)}</div>
                                     </div>
                                 ))}
                             </div>
                             <div className="summary-total" style={{ borderTop: '2px solid #fff0e5', paddingTop: '20px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '20px', fontWeight: '800' }}>
                                     <div style={{ color: '#8d7a6e' }}>Total Amount</div>
-                                    <div style={{ color: '#261a13' }}>$ {getTotalPrice()} USD</div>
+                                    <div style={{ color: '#261a13' }}>{formatPrice(getTotalPrice())}</div>
                                 </div>
                             </div>
                             <div style={{ marginTop: '40px', padding: '20px', background: '#fdf0e1', borderRadius: '15px', border: '1px dashed #ebcfb9' }}>

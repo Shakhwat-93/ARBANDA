@@ -5,6 +5,7 @@ import Subscribe from '../components/Subscribe';
 import RelatedProducts from '../components/RelatedProducts';
 import useCartStore from '../store/useCartStore';
 import { toast } from 'react-hot-toast';
+import { useCurrency } from '../context/CurrencyContext';
 
 const ProductDetailPage = () => {
     const { id } = useParams();
@@ -13,6 +14,7 @@ const ProductDetailPage = () => {
     const [quantity, setQuantity] = useState(1);
     const [activeAccordion, setActiveAccordion] = useState(null);
     const addItem = useCartStore((state) => state.addItem);
+    const { formatPrice } = useCurrency();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -148,7 +150,7 @@ const ProductDetailPage = () => {
                             <h1 style={{ color: '#261a13', fontSize: '48px', lineHeight: '1.1', marginBottom: '15px', fontFamily: 'inherit' }}>{product.name}</h1>
 
                             <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '25px' }}>
-                                <div style={{ color: '#b08d74', fontSize: '24px', fontWeight: '600' }}>$ {product.price} USD</div>
+                                <div style={{ color: '#b08d74', fontSize: '24px', fontWeight: '600' }}>{formatPrice(product.price)}</div>
                                 <div style={{ width: '1px', height: '20px', background: '#ebcfb9' }}></div>
                                 <div style={{ color: '#8d7a6e', textTransform: 'uppercase', fontSize: '12px', letterSpacing: '1px' }}>{product.category}</div>
                             </div>
@@ -213,7 +215,7 @@ const ProductDetailPage = () => {
                                 >
                                     <span>Add to Bag</span>
                                     <span style={{ opacity: 0.3, color: '#fff' }}>|</span>
-                                    <span>$ {(product.price * quantity).toFixed(2)}</span>
+                                    <span>{formatPrice(product.price * quantity)}</span>
                                 </button>
                             </div>
 

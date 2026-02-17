@@ -3,6 +3,7 @@ import { supabase } from '../supabaseClient';
 import { Link } from 'react-router-dom';
 import useCartStore from '../store/useCartStore';
 import { toast } from 'react-hot-toast';
+import { useCurrency } from '../context/CurrencyContext';
 
 const STATIC_PRODUCTS = [
     {
@@ -40,7 +41,8 @@ const STATIC_PRODUCTS = [
 ];
 
 export default function ShopSection({ selectedCategory }) {
-    const [products, setProducts] = useState(STATIC_PRODUCTS);
+    const { formatPrice } = useCurrency();
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const addItem = useCartStore((state) => state.addItem);
 
@@ -59,20 +61,15 @@ export default function ShopSection({ selectedCategory }) {
 
                 const { data, error } = await query;
 
-                if (!error && data && data.length > 0) {
+                if (!error && data) {
                     setProducts(data);
-                } else {
-                    // Filter static products if DB is empty/fails
-                    const filteredStatic = selectedCategory
-                        ? STATIC_PRODUCTS.filter(p => p.category === selectedCategory)
-                        : STATIC_PRODUCTS;
-                    setProducts(filteredStatic);
                 }
             } catch (err) {
-                console.log('Using static products fallback');
+                console.log('Error fetching products:', err);
             } finally {
                 setLoading(false);
             }
+
         };
 
         fetchProducts();
@@ -136,7 +133,7 @@ export default function ShopSection({ selectedCategory }) {
                                             <div className="blog-item-text-header"></div>
                                             <div className="shop-item-title-price">
                                                 <div className="shop-item-title">{product.name}</div>
-                                                <div className="shop-item-price">$ {product.price} USD</div>
+                                                <div className="shop-item-price">{formatPrice(product.price)}</div>
                                                 <div className="fade-in-on-scroll">
                                                     <p className="shop-item-summary">{product.summary || product.description?.substring(0, 100)}</p>
                                                 </div>

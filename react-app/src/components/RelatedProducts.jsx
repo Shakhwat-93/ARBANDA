@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import useCartStore from '../store/useCartStore';
 import { toast } from 'react-hot-toast';
+import { useCurrency } from '../context/CurrencyContext';
 
 const RelatedProducts = ({ currentProductId, category }) => {
     const [related, setRelated] = useState([]);
     const [loading, setLoading] = useState(true);
     const addItem = useCartStore((state) => state.addItem);
+    const { formatPrice } = useCurrency();
 
     useEffect(() => {
         const fetchRelated = async () => {
@@ -79,7 +81,7 @@ const RelatedProducts = ({ currentProductId, category }) => {
                                     <div className="shop-item-content">
                                         <div className="shop-item-title-price">
                                             <div className="shop-item-title" style={{ color: '#261a13', fontWeight: '600' }}>{product.name}</div>
-                                            <div className="shop-item-price" style={{ color: '#b08d74' }}>$ {product.price} USD</div>
+                                            <div className="shop-item-price" style={{ color: '#b08d74' }}>{formatPrice(product.price)}</div>
                                         </div>
                                     </div>
                                 </Link>

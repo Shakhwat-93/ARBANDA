@@ -13,7 +13,8 @@ import {
     Truck,
     Settings,
     LogOut,
-    Search
+    Search,
+    LayoutTemplate
 } from 'lucide-react';
 
 const AdminSidebar = () => {
@@ -45,6 +46,7 @@ const AdminSidebar = () => {
         { path: '/admin/products', icon: ShoppingBag, label: 'Products' },
         { path: '/admin/orders', icon: ShoppingCart, label: 'Orders' },
         { path: '/admin/customers', icon: Users, label: 'Customers' },
+        { path: '/admin/hero', icon: LayoutTemplate, label: 'Hero Section' },
         { path: '/admin/analytics', icon: BarChart3, label: 'Analytics' }, // Placeholder route
         { path: '/admin/inventory', icon: Layers, label: 'Inventory' }, // Placeholder route
         { path: '/admin/coupons', icon: Ticket, label: 'Coupons & Discounts' }, // Placeholder route

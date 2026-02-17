@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import useCartStore from '../store/useCartStore';
 import { supabase } from '../supabaseClient';
+import { useCurrency } from '../context/CurrencyContext';
 
 export default function Navbar() {
     const { getTotalItems, items, removeItem, updateQuantity, getTotalPrice } = useCartStore();
+    const { formatPrice } = useCurrency();
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false); // New state for mobile menu
@@ -314,7 +316,7 @@ export default function Navbar() {
                                                                     <img src={item.image_url} alt={item.name} style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #eee' }} onError={(e) => { e.target.src = 'https://placehold.co/100x100?text=Product'; }} />
                                                                     <div style={{ flex: 1 }}>
                                                                         <div style={{ color: '#261a13', fontWeight: '600', marginBottom: '5px', fontSize: '16px' }}>{item.name}</div>
-                                                                        <div style={{ color: '#b08d74', fontSize: '15px', fontWeight: '500' }}>$ {item.price} USD</div>
+                                                                        <div style={{ color: '#b08d74', fontSize: '15px', fontWeight: '500' }}>{formatPrice(item.price)}</div>
                                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginTop: '12px' }}>
                                                                             <div style={{ display: 'flex', alignItems: 'center', background: '#fff0e5', borderRadius: '20px', padding: '2px 10px', border: '1px solid #eee' }}>
                                                                                 <button onClick={() => updateQuantity(item.id, Math.max(0, item.quantity - 1))} style={{ background: 'none', border: 'none', color: '#261a13', cursor: 'pointer', padding: '5px 10px' }}>-</button>
@@ -334,7 +336,7 @@ export default function Navbar() {
                                                     <div className="cart-footer" style={{ borderTop: '1px solid #eee', paddingTop: '20px', marginTop: 'auto' }}>
                                                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
                                                             <div style={{ color: '#666', fontSize: '16px' }}>Subtotal</div>
-                                                            <div style={{ color: '#261a13', fontWeight: '700', fontSize: '20px' }}>$ {getTotalPrice()} USD</div>
+                                                            <div style={{ color: '#261a13', fontWeight: '700', fontSize: '20px' }}>{formatPrice(getTotalPrice())}</div>
                                                         </div>
                                                         <Link
                                                             to="/checkout"
