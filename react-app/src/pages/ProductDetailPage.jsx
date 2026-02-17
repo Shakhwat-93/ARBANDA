@@ -111,6 +111,8 @@ const ProductDetailPage = () => {
                                 <img
                                     src={product.image_url}
                                     alt={product.name}
+                                    fetchpriority="high"
+                                    loading="eager"
                                     style={{
                                         width: '100%',
                                         height: 'auto',

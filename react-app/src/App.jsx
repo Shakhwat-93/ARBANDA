@@ -1,29 +1,31 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
-import HomePage from './pages/HomePage';
-import ShopPage from './pages/ShopPage';
-import AboutPage from './pages/AboutPage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import CheckoutPage from './pages/CheckoutPage';
-import LoginPage from './pages/admin/LoginPage';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminProducts from './pages/admin/AdminProducts';
-import AdminOrders from './pages/admin/AdminOrders';
-import AdminCustomers from './pages/admin/AdminCustomers';
-import AdminSettings from './pages/admin/AdminSettings';
-import AdminHero from './pages/admin/AdminHero';
-import AdminCoupons from './pages/admin/AdminCoupons';
-import ComingSoon from './components/admin/ComingSoon';
-import ProtectedRoute from './components/admin/ProtectedRoute';
-import Registration from './pages/customer/Registration';
-import Login from './pages/customer/Login';
-import Profile from './pages/customer/Profile';
-import ForgotPassword from './pages/customer/ForgotPassword';
-import ResetPassword from './pages/customer/ResetPassword';
-import CustomerProtectedRoute from './components/customer/CustomerProtectedRoute';
 import { Toaster } from 'react-hot-toast';
 import { CurrencyProvider } from './context/CurrencyContext';
+import ProtectedRoute from './components/admin/ProtectedRoute';
+import CustomerProtectedRoute from './components/customer/CustomerProtectedRoute';
+
+// Lazy load pages
+const HomePage = lazy(() => import('./pages/HomePage'));
+const ShopPage = lazy(() => import('./pages/ShopPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
+const LoginPage = lazy(() => import('./pages/admin/LoginPage'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const AdminProducts = lazy(() => import('./pages/admin/AdminProducts'));
+const AdminOrders = lazy(() => import('./pages/admin/AdminOrders'));
+const AdminCustomers = lazy(() => import('./pages/admin/AdminCustomers'));
+const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
+const AdminHero = lazy(() => import('./pages/admin/AdminHero'));
+const AdminCoupons = lazy(() => import('./pages/admin/AdminCoupons'));
+const ComingSoon = lazy(() => import('./components/admin/ComingSoon'));
+const Registration = lazy(() => import('./pages/customer/Registration'));
+const Login = lazy(() => import('./pages/customer/Login'));
+const Profile = lazy(() => import('./pages/customer/Profile'));
+const ForgotPassword = lazy(() => import('./pages/customer/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/customer/ResetPassword'));
 
 function App() {
   return (
@@ -52,66 +54,73 @@ function App() {
             },
           }}
         />
-        <Routes>
-          {/* Customer Facing Routes */}
-          <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />
-          <Route path="/shop" element={<MainLayout><ShopPage /></MainLayout>} />
-          <Route path="/about" element={<MainLayout><AboutPage /></MainLayout>} />
-          <Route path="/product/:id" element={<MainLayout><ProductDetailPage /></MainLayout>} />
-          <Route path="/checkout" element={<MainLayout><CheckoutPage /></MainLayout>} />
+        <Suspense fallback={
+          <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fdf0e1' }}>
+            <div style={{ width: '40px', height: '40px', border: '3px solid #fff0e5', borderTop: '3px solid #b08d74', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+            <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+          </div>
+        }>
+          <Routes>
+            {/* Customer Facing Routes */}
+            <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />
+            <Route path="/shop" element={<MainLayout><ShopPage /></MainLayout>} />
+            <Route path="/about" element={<MainLayout><AboutPage /></MainLayout>} />
+            <Route path="/product/:id" element={<MainLayout><ProductDetailPage /></MainLayout>} />
+            <Route path="/checkout" element={<MainLayout><CheckoutPage /></MainLayout>} />
 
-          {/* Customer Auth */}
-          <Route path="/register" element={<Registration />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<MainLayout><ForgotPassword /></MainLayout>} />
-          <Route path="/reset-password" element={<MainLayout><ResetPassword /></MainLayout>} />
-          <Route path="/profile" element={
-            <MainLayout>
-              <CustomerProtectedRoute>
-                <Profile />
-              </CustomerProtectedRoute>
-            </MainLayout>
-          } />
+            {/* Customer Auth */}
+            <Route path="/register" element={<Registration />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<MainLayout><ForgotPassword /></MainLayout>} />
+            <Route path="/reset-password" element={<MainLayout><ResetPassword /></MainLayout>} />
+            <Route path="/profile" element={
+              <MainLayout>
+                <CustomerProtectedRoute>
+                  <Profile />
+                </CustomerProtectedRoute>
+              </MainLayout>
+            } />
 
-          {/* Admin Routes */}
-          <Route path="/admin/login" element={<LoginPage />} />
-          <Route path="/admin" element={
-            <ProtectedRoute>
-              <AdminDashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/products" element={
-            <ProtectedRoute>
-              <AdminProducts />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/orders" element={
-            <ProtectedRoute>
-              <AdminOrders />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/customers" element={
-            <ProtectedRoute>
-              <AdminCustomers />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/settings" element={
-            <ProtectedRoute>
-              <AdminSettings />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/hero" element={
-            <ProtectedRoute>
-              <AdminHero />
-            </ProtectedRoute>
-          } />
-          {/* Placeholder Routes */}
-          <Route path="/admin/analytics" element={<ProtectedRoute><ComingSoon title="Analytics Coming Soon" /></ProtectedRoute>} />
-          <Route path="/admin/inventory" element={<ProtectedRoute><ComingSoon title="Inventory Coming Soon" /></ProtectedRoute>} />
-          <Route path="/admin/coupons" element={<ProtectedRoute><AdminCoupons /></ProtectedRoute>} />
-          <Route path="/admin/integrations" element={<ProtectedRoute><ComingSoon title="Payments Configuration" /></ProtectedRoute>} />
-          <Route path="/admin/shipping" element={<ProtectedRoute><ComingSoon title="Shipping Settings" /></ProtectedRoute>} />
-        </Routes>
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<LoginPage />} />
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/products" element={
+              <ProtectedRoute>
+                <AdminProducts />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/orders" element={
+              <ProtectedRoute>
+                <AdminOrders />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/customers" element={
+              <ProtectedRoute>
+                <AdminCustomers />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/settings" element={
+              <ProtectedRoute>
+                <AdminSettings />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/hero" element={
+              <ProtectedRoute>
+                <AdminHero />
+              </ProtectedRoute>
+            } />
+            {/* Placeholder Routes */}
+            <Route path="/admin/analytics" element={<ProtectedRoute><ComingSoon title="Analytics Coming Soon" /></ProtectedRoute>} />
+            <Route path="/admin/inventory" element={<ProtectedRoute><ComingSoon title="Inventory Coming Soon" /></ProtectedRoute>} />
+            <Route path="/admin/coupons" element={<ProtectedRoute><AdminCoupons /></ProtectedRoute>} />
+            <Route path="/admin/integrations" element={<ProtectedRoute><ComingSoon title="Payments Configuration" /></ProtectedRoute>} />
+            <Route path="/admin/shipping" element={<ProtectedRoute><ComingSoon title="Shipping Settings" /></ProtectedRoute>} />
+          </Routes>
+        </Suspense>
       </Router>
     </CurrencyProvider>
   );

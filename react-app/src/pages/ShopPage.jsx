@@ -16,7 +16,7 @@ export default function ShopPage() {
                         selectedCategory={selectedCategory}
                         onCategorySelect={setSelectedCategory}
                     />
-                    <ShopSection selectedCategory={selectedCategory} />
+                    <ShopSection selectedCategory={selectedCategory} priority={true} />
                 </div>
             </div>
             <Subscribe />

@@ -40,7 +40,7 @@ const STATIC_PRODUCTS = [
     }
 ];
 
-export default function ShopSection({ selectedCategory }) {
+export default function ShopSection({ selectedCategory, priority = false }) {
     const { formatPrice } = useCurrency();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -117,13 +117,14 @@ export default function ShopSection({ selectedCategory }) {
                                 <p>No products found in this category yet.</p>
                             </div>
                         ) : (
-                            products.map((product) => (
+                            products.map((product, index) => (
                                 <div key={product.id} role="listitem" className="shop-item w-dyn-item">
                                     <Link to={`/product/${product.id}`} className="product-item-link w-inline-block">
                                         <div className="small-thumbnail-image">
                                             <img
                                                 alt={product.name}
-                                                loading="lazy"
+                                                loading={priority && index < 4 ? "eager" : "lazy"}
+                                                fetchpriority={priority && index < 2 ? "high" : "auto"}
                                                 src={product.image_url}
                                                 className="shop-item-image"
                                                 onError={(e) => { e.target.src = 'https://placehold.co/600x400?text=Product'; }}

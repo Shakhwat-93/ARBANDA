@@ -268,7 +268,7 @@ export default function Navbar() {
                                 </div>
                             </div>
                         </nav>
-                        <div className="menu-button w-nav-button" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                        <div className="menu-button w-nav-button" onClick={() => setIsMenuOpen(!isMenuOpen)} role="button" tabIndex="0" aria-label="Toggle menu" onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setIsMenuOpen(!isMenuOpen) }}>
                             <img src={isMenuOpen ? "/images/64c90de928c2823d70ea1ba1_x.svg" : "/images/64c90de928c2823d70ea1b90_menu-icon.svg"} loading="lazy" alt="" className="menu-icon" style={{ width: '24px', height: '24px' }} />
                         </div>
                     </div>
@@ -284,7 +284,7 @@ export default function Navbar() {
                         <div className="nav-right-actions" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                             <div className="nav-cart-holder">
                                 <div className="w-commerce-commercecartwrapper cart">
-                                    <div onClick={() => setIsCartOpen(true)} className="w-commerce-commercecartopenlink cart-button w-inline-block" style={{ cursor: 'pointer' }}>
+                                    <div onClick={() => setIsCartOpen(true)} className="w-commerce-commercecartopenlink cart-button w-inline-block" style={{ cursor: 'pointer' }} role="button" tabIndex="0" aria-label="Open cart" onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setIsCartOpen(true) }}>
                                         <img src="/images/64c90de928c2823d70ea1ba0_Cart.svg" alt="" className="cart-image" />
                                         <div className="w-commerce-commercecartopenlinkcount cart-quantity-number">{getTotalItems()}</div>
                                         <div className="link-background"></div>
@@ -297,7 +297,7 @@ export default function Navbar() {
                                             <div className="cart-container" style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: '400px', maxWidth: '100%', background: '#fdf0e1', borderLeft: '1px solid #ebcfb9', padding: '30px', display: 'flex', flexDirection: 'column', boxShadow: '-10px 0 30px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
                                                 <div className="cart-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
                                                     <h4 className="cart-title" style={{ margin: 0, color: '#261a13', fontSize: '24px', fontFamily: 'inherit' }}>Your Cart</h4>
-                                                    <div onClick={() => setIsCartOpen(false)} style={{ cursor: 'pointer', padding: '10px', background: '#fff0e5', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                    <div onClick={() => setIsCartOpen(false)} style={{ cursor: 'pointer', padding: '10px', background: '#fff0e5', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }} role="button" tabIndex="0" aria-label="Close cart" onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setIsCartOpen(false) }}>
                                                         <img src="/images/64c90de928c2823d70ea1ba1_x.svg" alt="Close" style={{ width: '14px', height: '14px', filter: 'brightness(0.2)' }} />
                                                     </div>
                                                 </div>
@@ -319,11 +319,11 @@ export default function Navbar() {
                                                                         <div style={{ color: '#b08d74', fontSize: '15px', fontWeight: '500' }}>{formatPrice(item.price)}</div>
                                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginTop: '12px' }}>
                                                                             <div style={{ display: 'flex', alignItems: 'center', background: '#fff0e5', borderRadius: '20px', padding: '2px 10px', border: '1px solid #eee' }}>
-                                                                                <button onClick={() => updateQuantity(item.id, Math.max(0, item.quantity - 1))} style={{ background: 'none', border: 'none', color: '#261a13', cursor: 'pointer', padding: '5px 10px' }}>-</button>
+                                                                                <button onClick={() => updateQuantity(item.id, Math.max(0, item.quantity - 1))} aria-label="Decrease quantity" style={{ background: 'none', border: 'none', color: '#261a13', cursor: 'pointer', padding: '5px 10px' }}>-</button>
                                                                                 <span style={{ color: '#261a13', minWidth: '20px', textAlign: 'center' }}>{item.quantity}</span>
-                                                                                <button onClick={() => updateQuantity(item.id, item.quantity + 1)} style={{ background: 'none', border: 'none', color: '#261a13', cursor: 'pointer', padding: '5px 10px' }}>+</button>
+                                                                                <button onClick={() => updateQuantity(item.id, item.quantity + 1)} aria-label="Increase quantity" style={{ background: 'none', border: 'none', color: '#261a13', cursor: 'pointer', padding: '5px 10px' }}>+</button>
                                                                             </div>
-                                                                            <div onClick={() => removeItem(item.id)} style={{ cursor: 'pointer', color: '#888', fontSize: '12px', textDecoration: 'underline' }}>Remove</div>
+                                                                            <div onClick={() => removeItem(item.id)} role="button" tabIndex="0" aria-label="Remove item" onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') removeItem(item.id) }} style={{ cursor: 'pointer', color: '#888', fontSize: '12px', textDecoration: 'underline' }}>Remove</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -362,6 +362,10 @@ export default function Navbar() {
                                             onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
                                             className={`cart-button w-inline-block ${isAccountMenuOpen ? 'w--current' : ''}`}
                                             style={{ padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                                            role="button"
+                                            tabIndex="0"
+                                            aria-label="Account menu"
+                                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setIsAccountMenuOpen(!isAccountMenuOpen) }}
                                         >
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transition: 'all 0.3s ease' }}>
                                                 <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="#261a13" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

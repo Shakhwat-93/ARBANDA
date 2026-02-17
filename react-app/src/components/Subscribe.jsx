@@ -10,7 +10,7 @@ export default function Subscribe() {
                         <p className="subscribe-form-paragraph">Pamper your skin with the purest organic ingredients and experience the difference of natural skincare.</p>
                         <div data-w-id="94ad1a15-a764-a1ee-f194-0bd3f8dcd9ce" className="subscribe-form-holder w-form">
                             <form id="Subscribe-Form" name="wf-form-Subscribe-Form" data-name="Subscribe Form" method="get" className="subscribe-form" data-wf-page-id="64c90de928c2823d70ea1bd4" data-wf-element-id="94ad1a15-a764-a1ee-f194-0bd3f8dcd9cf">
-                                <input className="subscribe-email w-input" maxLength="256" name="Email" data-name="Email" placeholder="your e-mail" type="email" id="Email" required="" />
+                                <input className="subscribe-email w-input" maxLength="256" name="Email" data-name="Email" placeholder="your e-mail" type="email" id="Email" required="" aria-label="Email address" />
                                 <input type="submit" data-wait="..." className="subscribe-button w-button" value="Subscribe" />
                             </form>
                             <div className="success-message w-form-done">

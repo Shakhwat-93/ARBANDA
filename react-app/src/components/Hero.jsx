@@ -97,14 +97,14 @@ const Hero = () => {
                     {/* Col 1: Far Left - Skincare Product */}
                     <div className="col-1">
                         <div className="magazine-card floating-item-card">
-                            {!loading && heroImages.col1_image && <img src={heroImages.col1_image} alt="Premium Skincare" />}
+                            {!loading && heroImages.col1_image && <img src={heroImages.col1_image} alt="Premium Skincare" loading="eager" />}
                         </div>
                     </div>
 
                     {/* Col 2: Inner Left - Fashion Stack */}
                     <div className="vertical-stack col-2">
                         <div className="magazine-card stack-card top">
-                            {!loading && heroImages.col2_top_image && <img src={heroImages.col2_top_image} alt="Vibrant Summer Fashion Collection" />}
+                            {!loading && heroImages.col2_top_image && <img src={heroImages.col2_top_image} alt="Vibrant Summer Fashion Collection" loading="eager" />}
                         </div>
                         <div className="magazine-card stack-card bottom">
                             {!loading && heroImages.col2_bottom_image && <img src={heroImages.col2_bottom_image} alt="Stylish Men's Apparel Collection" />}
@@ -114,7 +114,7 @@ const Hero = () => {
                     {/* Col 3: Center Hero Image (Lifestyle) */}
                     <div className="col-3">
                         <div className="magazine-card hero-center-card">
-                            {!loading && heroImages.center_image && <img src={heroImages.center_image} alt="High Quality Fashion Model" />}
+                            {!loading && heroImages.center_image && <img src={heroImages.center_image} alt="High Quality Fashion Model" fetchpriority="high" loading="eager" />}
                         </div>
                     </div>
 

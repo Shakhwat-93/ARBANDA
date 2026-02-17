@@ -53,19 +53,19 @@ export default function Footer() {
                                 </Link>
                             </div>
                             <div data-w-id="e349af5a-8778-c438-b6bd-4b35ca6e1275" className="social-media-icons">
-                                <a href="#" className="social-media-link w-inline-block">
+                                <a href="#" className="social-media-link w-inline-block" aria-label="Facebook">
                                     <img src="/images/64d0bdeaf2d115e4ae5ef65e_Facebook.svg" loading="lazy" alt="" className="social-media-icon" />
                                 </a>
-                                <a href="#" className="social-media-link w-inline-block">
+                                <a href="#" className="social-media-link w-inline-block" aria-label="LinkedIn">
                                     <img src="/images/64d0bdeb025e2c39c76c3e6c_Linkedin.svg" loading="lazy" alt="" className="social-media-icon" />
                                 </a>
-                                <a href="#" className="social-media-link w-inline-block">
+                                <a href="#" className="social-media-link w-inline-block" aria-label="GitHub">
                                     <img src="/images/64d0bdf0e249bc4771e39b3f_GitHub.svg" loading="lazy" alt="" className="social-media-icon" />
                                 </a>
-                                <a href="#" className="social-media-link w-inline-block">
+                                <a href="#" className="social-media-link w-inline-block" aria-label="Twitter">
                                     <img src="/images/64d0bdeb376f3c1159be6a0e_Twitter.svg" loading="lazy" alt="" className="social-media-icon" />
                                 </a>
-                                <a href="#" className="social-media-link w-inline-block">
+                                <a href="#" className="social-media-link w-inline-block" aria-label="Instagram">
                                     <img src="/images/64d0bdebe318aee0ebcbc73f_Instagram.svg" loading="lazy" alt="" className="social-media-icon" />
                                 </a>
                             </div>
@@ -76,7 +76,7 @@ export default function Footer() {
                                 <form id="wf-form-Footer-Form-Two" name="wf-form-Footer-Form-Two" data-name="Footer Form Two" method="get" className="footer-form-container-two" data-wf-page-id="64c90de928c2823d70ea1bd4" data-wf-element-id="4aecac3f-0c7b-18b4-30a0-65855eae8292">
                                     <div className="footer-form-block-two">
                                         <input className="footer-form-input w-input" maxLength="256" name="Footer-Email-Two" data-name="Footer Email Two" aria-label="Enter your email" placeholder="Email" type="email" id="Footer-Email-Two" required="" />
-                                        <input type="submit" data-wait="Please wait..." className="button-primary footer-form-button w-button" value="" />
+                                        <input type="submit" data-wait="Please wait..." className="button-primary footer-form-button w-button" value="" aria-label="Subscribe" />
                                     </div>
                                 </form>
                                 <div className="success-message w-form-done">
