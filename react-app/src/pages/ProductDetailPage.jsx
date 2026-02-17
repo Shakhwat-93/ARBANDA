@@ -6,6 +6,7 @@ import RelatedProducts from '../components/RelatedProducts';
 import useCartStore from '../store/useCartStore';
 import { toast } from 'react-hot-toast';
 import { useCurrency } from '../context/CurrencyContext';
+import { optimizeImage } from '../utils/imageOptimizer';
 
 const ProductDetailPage = () => {
     const { id } = useParams();
@@ -109,7 +110,7 @@ const ProductDetailPage = () => {
                                 transition: 'all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1)'
                             }}>
                                 <img
-                                    src={product.image_url}
+                                    src={optimizeImage(product.image_url, { width: 800 })}
                                     alt={product.name}
                                     fetchpriority="high"
                                     loading="eager"

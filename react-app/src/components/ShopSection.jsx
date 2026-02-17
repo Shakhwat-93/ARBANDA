@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import useCartStore from '../store/useCartStore';
 import { toast } from 'react-hot-toast';
 import { useCurrency } from '../context/CurrencyContext';
+import { optimizeImage } from '../utils/imageOptimizer';
 
 const STATIC_PRODUCTS = [
     {
@@ -125,7 +126,7 @@ export default function ShopSection({ selectedCategory, priority = false }) {
                                                 alt={product.name}
                                                 loading={priority && index < 4 ? "eager" : "lazy"}
                                                 fetchpriority={priority && index < 2 ? "high" : "auto"}
-                                                src={product.image_url}
+                                                src={optimizeImage(product.image_url, { width: 400 })}
                                                 className="shop-item-image"
                                                 onError={(e) => { e.target.src = 'https://placehold.co/600x400?text=Product'; }}
                                             />
