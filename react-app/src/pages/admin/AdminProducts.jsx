@@ -3,12 +3,14 @@ import AdminLayout from '../../layouts/AdminLayout';
 import AddProductModal from '../../components/admin/AddProductModal';
 import EditProductModal from '../../components/admin/EditProductModal';
 import { supabase } from '../../supabaseClient';
-import { Search, Plus, Edit, Trash2, MoreHorizontal, Filter } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, MoreHorizontal, Filter, Upload } from 'lucide-react';
 import PremiumLoader from '../../components/common/PremiumLoader';
+import BulkImportModal from '../../components/admin/BulkImportModal';
 
 const AdminProducts = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isBulkImportModalOpen, setIsBulkImportModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -104,6 +106,26 @@ const AdminProducts = () => {
                     }}
                 >
                     <Plus size={18} /> Add Product
+                </button>
+                <button
+                    onClick={() => setIsBulkImportModalOpen(true)}
+                    style={{
+                        padding: '10px 20px',
+                        background: '#27272a',
+                        color: '#fff',
+                        border: '1px solid #3f3f46',
+                        borderRadius: '8px',
+                        fontWeight: '600',
+                        fontSize: '14px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        width: isMobile ? '100%' : 'auto',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Upload size={18} /> Bulk Import
                 </button>
             </div>
 
@@ -265,6 +287,12 @@ const AdminProducts = () => {
                 product={selectedProduct}
                 onClose={() => setIsEditModalOpen(false)}
                 onProductUpdated={fetchProducts}
+            />
+
+            <BulkImportModal
+                isOpen={isBulkImportModalOpen}
+                onClose={() => setIsBulkImportModalOpen(false)}
+                onImportSuccess={fetchProducts}
             />
         </AdminLayout>
     );

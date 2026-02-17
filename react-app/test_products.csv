@@ -1,0 +1,4 @@
+name,category,price,stock,description,image_url
+Test Product 1,Skincare,25.00,50,Test description for product 1,https://placehold.co/600x400
+Test Product 2,Accessories,15.50,20,Test description for product 2,https://placehold.co/600x400
+Test Product 3,Electronics,99.99,10,Test description for product 3,https://placehold.co/600x400

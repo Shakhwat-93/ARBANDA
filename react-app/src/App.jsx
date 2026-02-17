@@ -19,6 +19,7 @@ const AdminOrders = lazy(() => import('./pages/admin/AdminOrders'));
 const AdminCustomers = lazy(() => import('./pages/admin/AdminCustomers'));
 const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 const AdminHero = lazy(() => import('./pages/admin/AdminHero'));
+const AdminShopHero = lazy(() => import('./pages/admin/AdminShopHero'));
 const AdminCoupons = lazy(() => import('./pages/admin/AdminCoupons'));
 const ComingSoon = lazy(() => import('./components/admin/ComingSoon'));
 const Registration = lazy(() => import('./pages/customer/Registration'));
@@ -111,6 +112,11 @@ function App() {
             <Route path="/admin/hero" element={
               <ProtectedRoute>
                 <AdminHero />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/shop-hero" element={
+              <ProtectedRoute>
+                <AdminShopHero />
               </ProtectedRoute>
             } />
             {/* Placeholder Routes */}

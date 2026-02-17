@@ -38,6 +38,10 @@ const MobileAdminNav = () => {
                 <LayoutDashboard size={20} />
                 <span>Home</span>
             </NavLink>
+            <NavLink to="/admin/shop-hero" style={linkStyle}>
+                <LayoutTemplate size={20} />
+                <span>Shop Hero</span>
+            </NavLink>
             <NavLink to="/admin/products" style={linkStyle}>
                 <ShoppingBag size={20} />
                 <span>Products</span>
